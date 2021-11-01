@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style_PlayPg.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@900&display=swap');
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="col-md-9 questions-answers">
+            <div class="col-md-12 questions">
+                <div class="circle">
+                    <p class="circle-content" id="circle-content">
+                    </p>
+                </div>
+                <div id="questions" class="btn-grad">
+                    <p id="questions_contain">
+                        Đâu là một loại hình chợ tạm tự phát thường xuất hiện trong các khu dân cư?
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-12 answers">
+                <div class="col-md-6">
+                    <input type="button" id="answers1" class="btn-grad" value="A.Cóc" onclick="checkAnswer1()">
+                </div>
+                <div class="col-md-6">
+                    <input type="button" id="answers2" class="btn-grad" value="B.Nhái" onclick="checkAnswer2()">
+                </div>
+                <div class="col-md-6">
+                    <input type="button" id="answers3" class="btn-grad" value="C.Ếch" onclick="checkAnswer3()">
+                </div>
+                <div class="col-md-6">
+                    <input type="button" id="answers4" class="btn-grad" value="D.Bưởi" onclick="checkAnswer4()">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 prices">
+            <div class="col-md-12">
+                <div class="col-md-4 helps">
+                    <img class="rounded" src="./imgs/5050.png" alt="">
+                </div>
+                <div class="col-md-4 helps">
+                    <img class="rounded" src="./imgs/CallDT.png" alt="">
+                </div>
+                <div class="col-md-4 helps">
+                    <img class="rounded" src="./imgs/khangia.png" alt="">
+                </div>
+            </div>
+            <div class="col-md-12" id="bonus">
+            </div>
+        </div>
+    </div>
+    <!-- Thông báo kết thúc game -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Kết thúc trò chơi!
+                    </h5>
+                    <button type="button" class="close" aria-label="Close" onclick="closeModal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    Chúc mừng bạn là người chiến thắng!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show" id="backdrop" style="display: none;"></div>
+    <!-- Đây là script -->
+    <script src="./js/custom_loadPlayPg.js">
+    </script>
+</body>
+
+</html>

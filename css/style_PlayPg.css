@@ -1,0 +1,211 @@
+* {
+    margin: 0px !important;
+    padding: 0px !important;
+    box-sizing: border-box;
+    font-family: 'Roboto Slab', serif;
+    font-weight: bold;
+    color: Black;
+}
+
+.container-fluid {
+    background-image: url(../imgs/background.png);
+    background-size: cover;
+    background-position: center;
+}
+
+.container-fluid:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.questions-answers,
+.prices {
+    float: left;
+    padding: 0px;
+}
+
+.questions {
+    width: 100%;
+    min-height: 50vh;
+    position: relative !important;
+    top: 0px;
+    left: 0px;
+}
+
+#questions {
+    position: absolute !important;
+    bottom: 0px;
+    left: 50%;
+    transform: translate(-50%);
+    padding: 10px 15px !important;
+}
+
+#questions p {
+    font-size: xx-large !important;
+}
+
+.answers {
+    width: 100%;
+    min-height: 20vh;
+    margin-top: 50px !important;
+}
+
+.prices {
+    min-height: 100vh;
+    color: black;
+}
+
+.answers div {
+    float: left;
+    text-align: center;
+}
+
+.answers div input[type="button"] {
+    margin: 30px 50px !important;
+    padding: 30px 15px !important;
+    width: 80%;
+    font-size: large;
+}
+
+.btn-grad {
+    background-image: linear-gradient(to right, #FF8008 0%, #FFC837 51%, #FF8008 100%)
+}
+
+.btn-grad {
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: rgb(8, 4, 4);
+    box-shadow: 0 0 20px rgb(231, 155, 105);
+    border-radius: 10px;
+    display: block;
+}
+
+.btn-grad:hover {
+    background-position: right center;
+    color: rgb(8, 4, 4);
+    text-decoration: none;
+}
+
+.prices div {
+    float: left;
+    min-height: 50px;
+    padding: 30px;
+}
+
+.helps {
+    text-align: center;
+}
+
+.helps img {
+    margin: 10px !important;
+    width: 90px !important;
+}
+
+.helps img:hover {
+    cursor: pointer;
+}
+
+.prices {
+    background: linear-gradient(to right, rgb(255, 128, 8, 0.3), rgb(255, 200, 55, 0.3));
+    border-radius: 10px;
+}
+
+.bonusPrices-left {
+    padding: 10px 25px !important;
+    font-size: 20px;
+    background: transparent;
+    border-radius: 0px 10px 10px 0px;
+    border: 10px;
+}
+
+.bonusPrices-right {
+    padding: 10px 25px !important;
+    font-size: 20px;
+    background: transparent;
+    /* background: linear-gradient(to right, #FF8008, #FFC837); */
+    border-radius: 10px 0px 0px 10px;
+    border: 10px;
+}
+
+.priceValue,
+.bonusPricesNo {
+    color: #fb7a00 !important;
+    font-weight: bold;
+    font-size: x-large;
+}
+
+.priceValue5,
+.bonusPricesNo5 {
+    color: white !important;
+    font-weight: bold;
+    font-size: x-large;
+    background: transparent;
+}
+
+.this-active {
+    color: #fb7a00 !important;
+    border: 10px solid black;
+}
+
+.circle {
+    background: linear-gradient(to right, #FF8008, #FFC837);
+    border-radius: 50%;
+    color: black;
+    height: 8.4em;
+    position: relative;
+    width: 8.4em;
+    top: 4rem;
+    left: 3rem;
+}
+
+.circle-content {
+    hyphens: auto;
+    margin: 0.75em;
+    text-align: center;
+    margin: 4rem;
+    font-size: 60px;
+}
+
+@supports (shape-outside: circle(50%)) {
+    .circle-content {
+        height: 100%;
+        margin: 4rem;
+    }
+    .circle::before,
+    .circle-content::before {
+        content: "";
+        height: 100%;
+        width: 50%;
+    }
+    .circle::before {
+        float: left;
+        shape-outside: polygon( 0 0, 100% 0, 60% 4%, 40% 10%, 20% 20%, 10% 28.2%, 5% 34.4%, 0 50%, 5% 65.6%, 10% 71.8%, 20% 80%, 40% 90%, 60% 96%, 100% 100%, 0 100%);
+    }
+    .circle-content::before {
+        float: right;
+        shape-outside: polygon( 100% 0, 0 0, 40% 4%, 60% 10%, 80% 20%, 90% 28.2%, 95% 34.4%, 100% 50%, 95% 65.6%, 90% 71.8%, 80% 80%, 60% 90%, 40% 96%, 0 100%, 100% 100%);
+    }
+}
+
+.modal-dialog {
+    position: absolute !important;
+    bottom: 50%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+}
+
+.modal-content {
+    padding: 20px !important;
+    min-width: 500px !important;
+    min-height: 200px !important;
+    background: linear-gradient(to right, #FF8008, #FFC837);
+}
+
+.modal-body {
+    text-align: center;
+    line-height: 200px;
+    font-size: 20px;
+}
