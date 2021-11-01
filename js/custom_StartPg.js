@@ -2,7 +2,7 @@ function start() {
     var sound = document.getElementById("welcomeAudio");
     sound.play();
     sound.onended = function() {
-        window.location.href = "../loadQuestion.html"
+        window.location.href = "../playGame.html"
     };
 }
 
