@@ -41,7 +41,13 @@ const questionArray = new Array(
 let certainEarnMoney = 0,
     myMoney = 0,
     level = 1,
-    limitedTime = 5;
+    limitedTime = 10,
+    isAsking = false,
+    help50Used = false,
+    callPhoneUsed = false,
+    askViewerUsed = false,
+    myNotification = "";
+let question = document.getElementById("questions-now");
 let answer1 = document.getElementById("answer1");
 let answer2 = document.getElementById("answer2");
 let answer3 = document.getElementById("answer3");
@@ -84,32 +90,40 @@ function setActiveBorder(level) {
     let activeNo = document.getElementById(`Money${level}`);
     let activeMoney = document.getElementById(`bonusPrice${level}`);
 
+    if (level < 15) {
+        if (level > 0) {
+            let deactivateBorder = document.getElementById(`borderHere${level-1}`);
+            let deactivateNo = document.getElementById(`Money${level-1}`);
+            let deactivateMoney = document.getElementById(`bonusPrice${level-1}`);
+            deactivateNo.classList.remove("active5");
+            deactivateMoney.classList.remove("active5");
+            deactivateBorder.classList.remove("active-border");
+        }
 
-    if (level > 0) {
-        let deactivateBorder = document.getElementById(`borderHere${level-1}`);
-        let deactivateNo = document.getElementById(`Money${level-1}`);
-        let deactivateMoney = document.getElementById(`bonusPrice${level-1}`);
-        deactivateNo.classList.remove("active5");
-        deactivateMoney.classList.remove("active5");
-        deactivateBorder.classList.remove("active-border");
+        activeBorder.classList.add("active-border");
+        activeNo.classList.add("active5");
+        activeMoney.classList.add("active5");
     }
-
-    activeBorder.classList.add("active-border");
-    activeNo.classList.add("active5");
-    activeMoney.classList.add("active5");
 }
 
 function checkAnswer(answer) {
     if (answer.value == questionsList[level].answer) {
         myMoney = bonusPrice[level];
         setActiveBorder(level);
-        if (level == 5 || level == 10)
+        if (level == 5 || level == 10 || level == 15)
             certainEarnMoney = bonusPrice[level - 1];
-        level++;
-        loadQuestion(questionsList);
-        startClock();
+        if (level >= 15) {
+            showResults();
+            clearInterval(downloadTimer);
+        } else {
+            level++;
+            loadQuestion(questionsList);
+            clearInterval(downloadTimer);
+            startClock();
+        }
     } else {
-        closeModal();
+        showResults();
+        clearInterval(downloadTimer);
     }
 }
 
@@ -125,7 +139,6 @@ function randomSelectQuestion() {
 }
 
 function loadQuestion(questionsList) {
-    let question = document.getElementById("questions-now");
     question.innerText = questionsList[level].question;
     answer1.value = questionsList[level].options.option1;
     answer2.value = questionsList[level].options.option2;
@@ -139,41 +152,45 @@ function loadPricesLevel() {
     for (let i = bonusPrice.length - 1; i >= 0; i--) {
         if (i == 0) {
             bonusBar.innerHTML += `
-            <div class="col-md-12 active-border" id="borderHere${i}">
-            <div class="col-md-3 text-right bonusPrices-right bonusPricesNo5 active5" id="Money${i}">${i+1}</div>
-            <div class="col-md-9 text-left bonusPrices-left priceValue5 active5" id="bonusPrice${i}">${bonusPrice[i]}</div>            
-            </div>
-            `;
+<div class="col-md-12 active-border" id="borderHere${i}">
+<div class="col-md-3 text-right bonusPrices-right bonusPricesNo5 active5" id="Money${i}">${i+1}</div>
+<div class="col-md-9 text-left bonusPrices-left priceValue5 active5" id="bonusPrice${i}">${bonusPrice[i]}</div>            
+</div>
+`;
             continue;
         }
         if ((i + 1) % 5 != 0) {
             bonusBar.innerHTML += `
-            <div class="col-md-12" id="borderHere${i}">
-            <div class="col-md-3 text-right bonusPrices-right bonusPricesNo" id="Money${i}">${i+1}</div>
-            <div class="col-md-9 bonusPrices-left priceValue" id="bonusPrice${i}">${bonusPrice[i]}</div> 
-            </div>
-            `;
+<div class="col-md-12" id="borderHere${i}">
+<div class="col-md-3 text-right bonusPrices-right bonusPricesNo" id="Money${i}">${i+1}</div>
+<div class="col-md-9 bonusPrices-left priceValue" id="bonusPrice${i}">${bonusPrice[i]}</div> 
+</div>
+`;
         } else {
             bonusBar.innerHTML += `
-            <div class="col-md-12" id="borderHere${i}">
-            <div class="col-md-3 text-right bonusPrices-right bonusPricesNo5 " id="Money${i}">${i+1}</div>
-            <div class="col-md-9 text-left bonusPrices-left priceValue5" id="bonusPrice${i}">${bonusPrice[i]}</div>            
-            </div>
-            `;
+<div class="col-md-12" id="borderHere${i}">
+<div class="col-md-3 text-right bonusPrices-right bonusPricesNo5 " id="Money${i}">${i+1}</div>
+<div class="col-md-9 text-left bonusPrices-left priceValue5" id="bonusPrice${i}">${bonusPrice[i]}</div>            
+</div>
+`;
         }
     }
     bonusBar.innerHTML += `
-    <div class="col-md-12 text-center">
-        <input type="button" value="Kết thúc" id="endGame" onclick="showResults()" class="btn btn-primary">
-    </div>`;
+<div class="col-md-12 text-center">
+<input type="button" value="Kết thúc" id="endGame" onclick="giveMoney()" class="btn btn-primary">
+</div>`;
 }
+
+var downloadTimer;
 
 function startClock() {
     let time_left = limitedTime;
     display = document.getElementById("circle-content");
-    let downloadTimer = setInterval(function() {
+    display.textContent = time_left;
+    downloadTimer = setInterval(function() {
         if (time_left <= 0) {
             time_left = limitedTime;
+            display.textContent = time_left;
             clearInterval(downloadTimer);
             showResults();
         } else {
@@ -186,24 +203,124 @@ function startClock() {
 function showResults() {
     let notification = document.getElementById("modal-body");
     notification.innerText = `Bạn giành được ${certainEarnMoney} USD`;
+    clearInterval(downloadTimer);
     document.getElementById("backdrop").style.display = "block";
     document.getElementById("exampleModal").style.display = "block";
     document.getElementById("exampleModal").classList.add("show");
 }
 
+function giveMoney() {
+    let notification = document.getElementById("modal-body");
+    notification.innerText = `Bạn giành được ${myMoney} USD`;
+    clearInterval(downloadTimer);
+    document.getElementById("backdrop").style.display = "block";
+    document.getElementById("exampleModal").style.display = "block";
+    document.getElementById("exampleModal").classList.add("show");
+}
+
+
 function closeModal() {
     document.getElementById("backdrop").style.display = "none";
     document.getElementById("exampleModal").style.display = "none";
     document.getElementById("exampleModal").classList.remove("show");
+    if (isAsking) {
+        let btnReplay = document.getElementById("btnReplay");
+        btnReplay.style.visibility = "visible";
+        isAsking = false;
+    } else {
+        window.location.reload(false);
+        isAsking = false;
+    }
 }
 
 function replay() {
     window.location.reload(false);
 }
 
-var modal = document.getElementById('exampleModal');
-window.onclick = function(event) {
-    if (event.target == modal) {
-        closeModal();
+function showAnswer(myNotification) {
+    let btnReplay = document.getElementById("btnReplay");
+    btnReplay.style.visibility = 'hidden';
+    let notification = document.getElementById("modal-body");
+    notification.innerHTML = myNotification;
+    document.getElementById("backdrop").style.display = "block";
+    document.getElementById("exampleModal").style.display = "block";
+    document.getElementById("exampleModal").classList.add("show");
+}
+
+function askViewer() {
+    isAsking = true;
+    if (!askViewerUsed) {
+        askViewerUsed = true;
+        let max = 100;
+        let rate = []
+        for (let i = 0; i < 4; i++) {
+            rate[i] = Math.floor(Math.random() * max);
+            max -= rate[i];
+        }
+        showRate(rate);
+    } else {
+        showAnswer("Trợ giúp đã được sử dụng!")
     }
+}
+
+function showRate(rate) {
+    let myString = `
+A: ${rate[0]}%; <br>
+B: ${rate[1]}%; <br>
+C: ${rate[2]}%; <br>
+D: ${rate[3]}%; <br>
+`;
+
+    showAnswer(myString);
+}
+
+function callPhone() {
+    isAsking = true;
+    if (!callPhoneUsed) {
+        callPhoneUsed = true;
+        let myAnswer = `My answer is ${questionsList[level].answer}`;
+        showAnswer(myAnswer);
+    } else {
+        showAnswer("Trợ giúp đã được sử dụng!")
+    }
+}
+
+function help50() {
+    let position = [];
+    let indexArray = [];
+    if (questionsList[level].options.option1 == questionsList[level].answer) {
+        indexArray = new Array(questionsList[level].options.option2, questionsList[level].options.option3, questionsList[level].options.option4);
+        position[0] = questionsList[level].options.option1;
+    }
+    if (questionsList[level].options.option2 == questionsList[level].answer) {
+        indexArray = new Array(questionsList[level].options.option1, questionsList[level].options.option3, questionsList[level].options.option4);
+        position[0] = questionsList[level].options.option2;
+    }
+    if (questionsList[level].options.option3 == questionsList[level].answer) {
+        indexArray = new Array(questionsList[level].options.option1, questionsList[level].options.option2, questionsList[level].options.option4);
+        position[0] = questionsList[level].options.option3;
+    }
+    if (questionsList[level].options.option4 == questionsList[level].answer) {
+        indexArray = new Array(questionsList[level].options.option1, questionsList[level].options.option2, questionsList[level].options.option3);
+        position[0] = questionsList[level].options.option4;
+    }
+    position[1] = indexArray[Math.floor(Math.random() * indexArray.length)];
+
+
+    if (!checkValueInArray(position, questionsList[level].options.option1))
+        answer1.value = "";
+    if (!checkValueInArray(position, questionsList[level].options.option2))
+        answer2.value = "";
+    if (!checkValueInArray(position, questionsList[level].options.option3))
+        answer3.value = "";
+    if (!checkValueInArray(position, questionsList[level].options.option4))
+        answer4.value = "";
+}
+
+function checkValueInArray(myArray, value) {
+    for (let i = 0; i < myArray.length; i++) {
+        if (myArray[i] == value)
+            return true;
+    }
+    return false;
 }
